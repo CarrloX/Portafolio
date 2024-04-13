@@ -3,7 +3,7 @@ buttonGithub.addEventListener("click", function(){
   window.location.href = "https://github.com/CarrloX"
 });
 $(function() {
-  let $grid = $('.gridder').isotope({
+  let $grid = $('.gridder')({
     itemSelector: '.grid-item',
     percentPosition: true
   });
