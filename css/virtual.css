@@ -904,6 +904,18 @@ a:hover, a:active {
     margin-right: 5px;
 }
 
+#MobileIcon,
+#PaintIcon,
+#UI_UX,
+#DesktopIcon{
+    display: flex;
+    justify-content: center;
+    width: 100px;
+    height: 100px;
+    align-items: center;
+    text-align: center;
+};
+
 @media (min-width: 768px) {
     .gridder .grid-item,
     .gridder .grid-sizer {
