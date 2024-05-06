@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-RegistrosApplication<registros>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.riwi.registros.RegistrosApplication",
+            "projectName": "registros",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

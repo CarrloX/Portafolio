@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-TareasDiariasApplication<demo>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.tareasDiarias.demo.TareasDiariasApplication",
+            "projectName": "demo",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

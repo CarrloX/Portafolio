@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-PrimeraWebApplication<primera-web>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.riwi.primera.web.PrimeraWebApplication",
+            "projectName": "primera-web",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
