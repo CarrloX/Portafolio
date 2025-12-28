@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { motion, useSpring, useTransform, animate } from "framer-motion";
+import React, { useState } from "react";
+import { motion, animate } from "framer-motion";
 import galaxy from "../assets/img/galaxy.jpg";
 
 interface AnimatedNumberProps {
@@ -9,7 +9,7 @@ interface AnimatedNumberProps {
 const AnimatedNumber: React.FC<AnimatedNumberProps> = ({ value }) => {
   // Extract number and prefix/suffix (+ or ,)
   const isPlus = value.startsWith("+");
-  const numericValue = parseInt(value.replace(/\D/g, ""), 10);
+  const numericValue = Number.parseInt(value.replaceAll(/\D/g, ""), 10);
 
   const [currentValue, setCurrentValue] = useState(0);
 
