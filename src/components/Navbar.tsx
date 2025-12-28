@@ -9,22 +9,22 @@ const Navbar = () => {
     if (savedTheme) return savedTheme;
 
     // Detect system preference
-    return window.matchMedia("(prefers-color-scheme: dark)").matches
+    return globalThis.matchMedia("(prefers-color-scheme: dark)").matches
       ? "dark"
       : "light";
   });
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 100) {
+      if (globalThis.scrollY > 100) {
         setIsSticky(true);
       } else {
         setIsSticky(false);
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    globalThis.addEventListener("scroll", handleScroll);
+    return () => globalThis.removeEventListener("scroll", handleScroll);
   }, []);
 
   useEffect(() => {
@@ -66,7 +66,7 @@ const Navbar = () => {
       const elementPosition = elementRect - bodyRect;
       const offsetPosition = elementPosition - offset;
 
-      window.scrollTo({
+      globalThis.scrollTo({
         top: offsetPosition,
         behavior: "smooth",
       });

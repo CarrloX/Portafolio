@@ -18,29 +18,40 @@ interface PortfolioItemProps {
 }
 
 const PortfolioItem: React.FC<PortfolioItemProps> = ({ project, onClick }) => (
-  <div
-    className="col-md-6 col-lg-4 grid-item"
-    onClick={onClick}
-    style={{ cursor: "pointer" }}
-  >
-    <motion.div
-      className="img-place"
-      layoutId={`card-${project.id}`}
-      initial={{ opacity: 0, scale: 0.9 }}
-      whileInView={{ opacity: 1, scale: 1 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5 }}
+  <div className="col-md-6 col-lg-4 grid-item">
+    <button
+      className="portfolio-item-btn"
+      onClick={onClick}
+      style={{
+        background: "none",
+        border: "none",
+        padding: 0,
+        width: "100%",
+        textAlign: "inherit",
+        cursor: "pointer",
+        display: "block",
+      }}
+      aria-label={`Ver detalles de ${project.title}`}
     >
-      <motion.img
-        layoutId={`img-${project.id}`}
-        src={project.img}
-        alt={project.title}
-      />
-      <div className="img-caption">
-        <h5 className="fg-theme">{project.title}</h5>
-        <p>{project.description}</p>
-      </div>
-    </motion.div>
+      <motion.div
+        className="img-place"
+        layoutId={`card-${project.id}`}
+        initial={{ opacity: 0, scale: 0.9 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5 }}
+      >
+        <motion.img
+          layoutId={`img-${project.id}`}
+          src={project.img}
+          alt={project.title}
+        />
+        <div className="img-caption">
+          <h5 className="fg-theme">{project.title}</h5>
+          <p>{project.description}</p>
+        </div>
+      </motion.div>
+    </button>
   </div>
 );
 
@@ -121,6 +132,14 @@ const Portfolio: React.FC = () => {
               backdropFilter: "blur(10px)",
             }}
             onClick={() => setSelectedId(null)}
+            onKeyDown={(e) => {
+              if (e.key === "Escape") {
+                setSelectedId(null);
+              }
+            }}
+            role="button"
+            tabIndex={-1} // The modal root isn't meant to be tabbed to directly, usually
+            aria-label="Cerrar modal"
           >
             <motion.div
               layoutId={`card-${selectedId}`}
