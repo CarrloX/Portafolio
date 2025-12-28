@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Navbar = () => {
   const [isSticky, setIsSticky] = useState(false);
   const [isOverDark, setIsOverDark] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [theme, setTheme] = useState(() => {
     const savedTheme = localStorage.getItem("theme");
     if (savedTheme) return savedTheme;
@@ -70,6 +71,11 @@ const Navbar = () => {
         top: offsetPosition,
         behavior: "smooth",
       });
+
+      // Use a small timeout to ensure the scroll starts before the menu unmounts/re-renders
+      setTimeout(() => {
+        setIsOpen(false);
+      }, 100);
     }
   };
 
@@ -81,69 +87,143 @@ const Navbar = () => {
       data-navbar-mode={theme === "dark" || isOverDark ? "dark" : "light"}
       className={`navbar navbar-expand-lg ${isSticky ? "navbar-sticky" : ""}`}
     >
-      <div className="container d-flex justify-content-center">
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#main-navbar"
-        >
-          <span className="bx bx-menu"></span>
-        </button>
-        <div
-          className="collapse navbar-collapse justify-content-center"
-          id="main-navbar"
-        >
-          <ul className="navbar-nav align-items-center">
-            <li className="nav-item">
-              <a
-                className="nav-link"
-                href="#home"
-                onClick={(e) => scrollToSection(e, "home")}
-              >
-                Inicio
-              </a>
-            </li>
-            <li className="nav-item">
-              <a
-                className="nav-link"
-                href="#about"
-                onClick={(e) => scrollToSection(e, "about")}
-              >
-                Info
-              </a>
-            </li>
-            <li className="nav-item">
-              <a
-                className="nav-link"
-                href="#portfolio"
-                onClick={(e) => scrollToSection(e, "portfolio")}
-              >
-                Portafolio
-              </a>
-            </li>
-            <li className="nav-item">
-              <a
-                className="nav-link"
-                href="#contact"
-                onClick={(e) => scrollToSection(e, "contact")}
-              >
-                Contacto
-              </a>
-            </li>
-            <li className="nav-item">
-              <button
-                className="theme-toggle"
-                onClick={toggleTheme}
-                aria-label="Cambiar tema"
-              >
-                <i
-                  className={`bx ${theme === "dark" ? "bx-sun" : "bx-moon"}`}
-                ></i>
-              </button>
-            </li>
-          </ul>
+      <div className="container px-0 px-lg-3">
+        <div className="navbar-content w-100 position-relative">
+          {/* Mobile Toggler (Left) */}
+          <div className="d-lg-none">
+            <button
+              className={`navbar-toggler ${isOpen ? "open" : ""}`}
+              type="button"
+              onClick={() => setIsOpen(!isOpen)}
+              aria-label="Toggle navigation"
+            >
+              <span className="toggler-icon"></span>
+            </button>
+          </div>
+
+          {/* Mobile Title (Center) */}
+          <div className="d-lg-none text-center">
+            <span className="navbar-title-mobile">Portafolio</span>
+          </div>
+
+          {/* Desktop Menu */}
+          <div className="d-none d-lg-block w-100">
+            <ul className="navbar-nav justify-content-center align-items-center">
+              <li className="nav-item">
+                <a
+                  className="nav-link"
+                  href="#home"
+                  onClick={(e) => scrollToSection(e, "home")}
+                >
+                  Inicio
+                </a>
+              </li>
+              <li className="nav-item">
+                <a
+                  className="nav-link"
+                  href="#about"
+                  onClick={(e) => scrollToSection(e, "about")}
+                >
+                  Info
+                </a>
+              </li>
+              <li className="nav-item">
+                <a
+                  className="nav-link"
+                  href="#portfolio"
+                  onClick={(e) => scrollToSection(e, "portfolio")}
+                >
+                  Portafolio
+                </a>
+              </li>
+              <li className="nav-item">
+                <a
+                  className="nav-link"
+                  href="#contact"
+                  onClick={(e) => scrollToSection(e, "contact")}
+                >
+                  Contacto
+                </a>
+              </li>
+              <li className="nav-item">
+                <button
+                  className="theme-toggle"
+                  onClick={toggleTheme}
+                  aria-label="Cambiar tema"
+                >
+                  <i
+                    className={`bx ${theme === "dark" ? "bx-sun" : "bx-moon"}`}
+                  ></i>
+                </button>
+              </li>
+            </ul>
+          </div>
+
+          {/* Theme Toggle (Mobile) */}
+          <div className="d-lg-none flex-grow-1 d-flex justify-content-end">
+            <button
+              className="theme-toggle"
+              onClick={toggleTheme}
+              aria-label="Cambiar tema"
+            >
+              <i
+                className={`bx ${theme === "dark" ? "bx-sun" : "bx-moon"}`}
+              ></i>
+            </button>
+          </div>
         </div>
+
+        {/* Mobile Menu (Animated) */}
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              className="mobile-menu d-lg-none w-100 overflow-hidden"
+            >
+              <ul className="navbar-nav pt-3 pb-2 text-center">
+                <li className="nav-item">
+                  <a
+                    className="nav-link py-3"
+                    href="#home"
+                    onClick={(e) => scrollToSection(e, "home")}
+                  >
+                    Inicio
+                  </a>
+                </li>
+                <li className="nav-item">
+                  <a
+                    className="nav-link py-3"
+                    href="#about"
+                    onClick={(e) => scrollToSection(e, "about")}
+                  >
+                    Info
+                  </a>
+                </li>
+                <li className="nav-item">
+                  <a
+                    className="nav-link py-3"
+                    href="#portfolio"
+                    onClick={(e) => scrollToSection(e, "portfolio")}
+                  >
+                    Portafolio
+                  </a>
+                </li>
+                <li className="nav-item">
+                  <a
+                    className="nav-link py-3"
+                    href="#contact"
+                    onClick={(e) => scrollToSection(e, "contact")}
+                  >
+                    Contacto
+                  </a>
+                </li>
+              </ul>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </motion.nav>
   );

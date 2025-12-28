@@ -347,6 +347,13 @@ h6 {
   border: 1px solid var(--border-color);
 }
 
+@media (min-width: 992px) {
+  .navbar {
+    left: 30px !important;
+    min-width: 600px;
+  }
+}
+
 .navbar .container {
   padding: 0;
   width: 100%;
@@ -369,9 +376,109 @@ h6 {
 }
 
 .navbar-toggler {
-  border: none;
+  border: none !important; /* Explicitly remove any border */
+  box-shadow: none !important; /* Remove any focus box-shadow */
+  outline: none !important; /* Remove focus outline */
+  padding: 8px; /* Bigger hit area */
+  width: 44px;
+  height: 44px;
+  display: flex !important;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.05); /* Subtle background */
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.navbar-toggler:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.toggler-icon {
+  width: 24px;
+  height: 2px;
+  background-color: var(--text-color);
+  border-radius: 2px;
+  transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+  position: relative;
+}
+
+.toggler-icon::before,
+.toggler-icon::after {
+  content: "";
+  position: absolute;
+  width: 24px;
+  height: 2px;
+  background-color: var(--text-color);
+  border-radius: 2px;
+  transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+  left: 0;
+}
+
+.toggler-icon::before {
+  top: -7px;
+}
+
+.toggler-icon::after {
+  top: 7px;
+}
+
+.navbar-toggler.open .toggler-icon {
+  background-color: transparent;
+}
+
+.navbar-toggler.open .toggler-icon::before {
+  top: 0;
+  transform: rotate(45deg);
+}
+
+.navbar-toggler.open .toggler-icon::after {
+  top: 0;
+  transform: rotate(-45deg);
+}
+
+.mobile-menu {
+  border-top: 1px solid var(--border-color);
+  margin-top: 15px; /* More space */
+}
+
+.navbar-title-mobile {
+  font-weight: 700;
+  font-size: 1.25rem;
   color: var(--text-color);
-  font-size: 1.5rem;
+  letter-spacing: -0.5px;
+}
+
+@media (max-width: 991.98px) {
+  .navbar {
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: 92%; /* Slightly narrower for better side margins */
+    min-width: unset;
+    padding: 0.6rem 1.25rem; /* Increased horizontal padding for breathing room */
+    border-radius: 25px;
+  }
+
+  .navbar-content {
+    display: grid !important;
+    grid-template-columns: 44px 1fr 44px; /* Fixed sides for perfect center title */
+    align-items: center;
+    gap: 15px; /* Increased gap */
+  }
+
+  .theme-toggle {
+    width: 44px;
+    height: 44px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    margin-left: 0 !important;
+    font-size: 1.25rem; /* Slightly larger icon to match toggler visual weight */
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+  }
 }
 
 /* Sections */
