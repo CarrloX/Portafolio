@@ -2,10 +2,7 @@ import React, { useEffect, useCallback } from "react";
 import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
 import yop from "../assets/img/yop.jpg";
 
-// Type definition for iOS DeviceOrientationEvent which includes requestPermission
-interface DeviceOrientationEventiOS extends DeviceOrientationEvent {
-  requestPermission?: () => Promise<"granted" | "denied">;
-}
+// SkillBar Props
 
 interface SkillBarProps {
   label: string;
@@ -64,8 +61,9 @@ const About: React.FC = () => {
 
   useEffect(() => {
     // For non-iOS or older iOS that doesn't require permission
-    const DeviceEvent =
-      DeviceOrientationEvent as unknown as DeviceOrientationEventiOS;
+    const DeviceEvent = DeviceOrientationEvent as unknown as {
+      requestPermission?: () => Promise<"granted" | "denied">;
+    };
     if (
       typeof DeviceOrientationEvent !== "undefined" &&
       typeof DeviceEvent.requestPermission !== "function"
@@ -80,8 +78,9 @@ const About: React.FC = () => {
 
   const handleInteraction = async () => {
     // Request permission for iOS 13+ devices
-    const DeviceEvent =
-      DeviceOrientationEvent as unknown as DeviceOrientationEventiOS;
+    const DeviceEvent = DeviceOrientationEvent as unknown as {
+      requestPermission?: () => Promise<"granted" | "denied">;
+    };
     if (
       typeof DeviceOrientationEvent !== "undefined" &&
       typeof DeviceEvent.requestPermission === "function"

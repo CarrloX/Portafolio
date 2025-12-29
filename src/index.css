@@ -57,11 +57,24 @@
   color: #ffffff !important;
 }
 
-.navbar[data-navbar-mode="dark"] .navbar-toggler,
 .navbar[data-navbar-mode="dark"] .toggler-icon,
 .navbar[data-navbar-mode="dark"] .toggler-icon::before,
 .navbar[data-navbar-mode="dark"] .toggler-icon::after {
   background-color: #ffffff !important;
+}
+
+/* Aggressive Toggler Transparency */
+.navbar .navbar-toggler,
+.navbar[data-navbar-mode="dark"] .navbar-toggler,
+.navbar-toggler:focus,
+.navbar-toggler:active,
+.navbar-toggler-icon:focus {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  -webkit-tap-highlight-color: transparent; /* Remove mobile highlight */
 }
 
 .navbar[data-navbar-mode="dark"] .navbar-title-mobile {
