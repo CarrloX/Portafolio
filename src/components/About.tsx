@@ -1,5 +1,11 @@
+import React, { useEffect, useCallback } from "react";
 import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
 import yop from "../assets/img/yop.jpg";
+
+// Type definition for iOS DeviceOrientationEvent which includes requestPermission
+interface DeviceOrientationEventiOS extends DeviceOrientationEvent {
+  requestPermission?: () => Promise<"granted" | "denied">;
+}
 
 interface SkillBarProps {
   label: string;
@@ -39,6 +45,58 @@ const About: React.FC = () => {
   const rotateX = useTransform(springY, [-100, 100], [20, -20]);
   const rotateY = useTransform(springX, [-100, 100], [-20, 20]);
 
+  const handleOrientation = useCallback(
+    (event: DeviceOrientationEvent) => {
+      if (event.beta === null || event.gamma === null) return;
+
+      // Gamma (left/right tilt) maps to X axis
+      // Beta (front/back tilt) maps to Y axis
+      // We assume a comfortable holding angle of ~45 degrees for Beta
+      const sensitivity = 2.5;
+      const xVal = event.gamma * sensitivity;
+      const yVal = (event.beta - 45) * sensitivity;
+
+      x.set(Math.min(Math.max(xVal, -100), 100));
+      y.set(Math.min(Math.max(yVal, -100), 100));
+    },
+    [x, y]
+  );
+
+  useEffect(() => {
+    // For non-iOS or older iOS that doesn't require permission
+    const DeviceEvent =
+      DeviceOrientationEvent as unknown as DeviceOrientationEventiOS;
+    if (
+      typeof DeviceOrientationEvent !== "undefined" &&
+      typeof DeviceEvent.requestPermission !== "function"
+    ) {
+      globalThis.addEventListener("deviceorientation", handleOrientation);
+    }
+
+    return () => {
+      globalThis.removeEventListener("deviceorientation", handleOrientation);
+    };
+  }, [handleOrientation]);
+
+  const handleInteraction = async () => {
+    // Request permission for iOS 13+ devices
+    const DeviceEvent =
+      DeviceOrientationEvent as unknown as DeviceOrientationEventiOS;
+    if (
+      typeof DeviceOrientationEvent !== "undefined" &&
+      typeof DeviceEvent.requestPermission === "function"
+    ) {
+      try {
+        const permissionState = await DeviceEvent.requestPermission();
+        if (permissionState === "granted") {
+          globalThis.addEventListener("deviceorientation", handleOrientation);
+        }
+      } catch (error) {
+        console.error("Error requesting device orientation permission:", error);
+      }
+    }
+  };
+
   function handleMouseMove(event: React.MouseEvent<HTMLDivElement>) {
     const rect = event.currentTarget.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
@@ -76,6 +134,7 @@ const About: React.FC = () => {
               transition={{ duration: 0.6 }}
               onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeave}
+              onClick={handleInteraction}
               style={{
                 rotateX,
                 rotateY,
