@@ -14,6 +14,30 @@ const Navbar = () => {
       ? "dark"
       : "light";
   });
+  const [isLandscape, setIsLandscape] = useState(false);
+
+  useEffect(() => {
+    const checkOrientation = () => {
+      // Most reliable way for emulators: simply check if width is greater than height
+      // and we are within the "mobile/tablet" range (less than 1024px or similar)
+      const isHorizontal = globalThis.innerWidth > globalThis.innerHeight;
+      const isMobileSize = globalThis.innerWidth < 1024;
+      setIsLandscape(isHorizontal && isMobileSize);
+    };
+
+    checkOrientation();
+    globalThis.addEventListener("resize", checkOrientation);
+    globalThis.addEventListener("orientationchange", checkOrientation);
+
+    // Check again after a short delay to handle emulator lag
+    const timer = setTimeout(checkOrientation, 500);
+
+    return () => {
+      globalThis.removeEventListener("resize", checkOrientation);
+      globalThis.removeEventListener("orientationchange", checkOrientation);
+      clearTimeout(timer);
+    };
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -85,12 +109,14 @@ const Navbar = () => {
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
       data-navbar-mode={theme === "dark" || isOverDark ? "dark" : "light"}
-      className={`navbar navbar-expand-lg ${isSticky ? "navbar-sticky" : ""}`}
+      className={`navbar ${
+        isLandscape ? "navbar-expand force-desktop" : "navbar-expand-lg"
+      } ${isSticky ? "navbar-sticky" : ""}`}
     >
       <div className="container px-0 px-lg-3">
         <div className="navbar-content w-100 position-relative">
           {/* Mobile Toggler (Left) */}
-          <div className="d-lg-none">
+          <div className={`${isLandscape ? "d-none" : "d-lg-none"}`}>
             <button
               className={`navbar-toggler ${isOpen ? "open" : ""}`}
               type="button"
@@ -102,12 +128,18 @@ const Navbar = () => {
           </div>
 
           {/* Mobile Title (Center) */}
-          <div className="d-lg-none text-center">
+          <div
+            className={`${isLandscape ? "d-none" : "d-lg-none"} text-center`}
+          >
             <span className="navbar-title-mobile">Portafolio</span>
           </div>
 
           {/* Desktop Menu */}
-          <div className="d-none d-lg-block w-100">
+          <div
+            className={`${
+              isLandscape ? "d-block" : "d-none d-lg-block"
+            } w-100 desktop-menu-wrapper`}
+          >
             <ul className="navbar-nav justify-content-center align-items-center">
               <li className="nav-item">
                 <a
@@ -160,7 +192,11 @@ const Navbar = () => {
           </div>
 
           {/* Theme Toggle (Mobile) */}
-          <div className="d-lg-none flex-grow-1 d-flex justify-content-end">
+          <div
+            className={`${
+              isLandscape ? "d-none" : "d-lg-none"
+            } flex-grow-1 d-flex justify-content-end`}
+          >
             <button
               className="theme-toggle"
               onClick={toggleTheme}
@@ -175,7 +211,7 @@ const Navbar = () => {
 
         {/* Mobile Menu (Animated) */}
         <AnimatePresence>
-          {isOpen && (
+          {isOpen && !isLandscape && (
             <motion.div
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: "auto", opacity: 1 }}

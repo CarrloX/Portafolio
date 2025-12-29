@@ -481,6 +481,58 @@ h6 {
   }
 }
 
+/* --- THE MAGIC BULLET --- */
+/* Force Desktop View on ALL mobile devices in landscape orientation */
+@media (orientation: landscape) and (max-width: 991.98px) {
+  /* Hide typical mobile elements */
+  .d-lg-none {
+    display: none !important;
+  }
+
+  /* Show typical desktop elements */
+  .d-none.d-lg-block {
+    display: block !important;
+    width: auto !important;
+  }
+
+  /* Recenter and restyle navbar as a pill */
+  .navbar {
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: auto !important;
+    min-width: 600px !important;
+    max-width: 98% !important;
+    padding: 0.4rem 2rem !important;
+    border-radius: 100px !important;
+    top: 15px !important;
+    white-space: nowrap;
+  }
+
+  .navbar-content {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 15px !important;
+    grid-template-columns: none !important;
+  }
+
+  /* Ensure the navbar items stay in a row */
+  .navbar-nav {
+    flex-direction: row !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .nav-item {
+    margin: 0 4px !important;
+  }
+
+  .nav-link {
+    font-size: 0.85rem !important;
+    padding: 0.4rem 0.6rem !important;
+  }
+}
+
 /* Sections */
 .page-about {
   background-color: var(--secondary-bg);
