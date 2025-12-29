@@ -2,7 +2,7 @@ import React from "react";
 
 const Footer: React.FC = () => {
   return (
-    <div className="vg-footer" id="contact">
+    <div className="vg-footer" id="contact" data-section-theme="dark">
       <div className="container">
         <div className="row">
           <div className="col-lg-4 py-3">

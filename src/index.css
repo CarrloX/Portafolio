@@ -57,7 +57,14 @@
   color: #ffffff !important;
 }
 
-.navbar[data-navbar-mode="dark"] .navbar-toggler {
+.navbar[data-navbar-mode="dark"] .navbar-toggler,
+.navbar[data-navbar-mode="dark"] .toggler-icon,
+.navbar[data-navbar-mode="dark"] .toggler-icon::before,
+.navbar[data-navbar-mode="dark"] .toggler-icon::after {
+  background-color: #ffffff !important;
+}
+
+.navbar[data-navbar-mode="dark"] .navbar-title-mobile {
   color: #ffffff !important;
 }
 
